@@ -1,6 +1,6 @@
 {
     "name": "BudgetTracker",
-    "short_name": "Budgit",
+    "short_name": "Budget",
     "icons": [
         {
             "src": "./icons/icon-72x72.png",
