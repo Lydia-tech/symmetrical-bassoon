@@ -2,7 +2,7 @@
 
 This is a PWA for tracking your budget! Built with Express, Mongoose, and MongoDB.
 
-Deployed app:
+Deployed app: https://fathomless-beyond-78323.herokuapp.com/
 
 
 ## Description
