@@ -43,8 +43,9 @@
             "type": "image/png"
         }
     ],
+    "favicon": "./icons/faviocon-96x96.png",
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
-    "start_url": "/",
+    "start_url": "https://fathomless-beyond-78323.herokuapp.com/",
     "display": "standalone"
 }

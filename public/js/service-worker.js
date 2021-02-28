@@ -4,12 +4,18 @@ const CACHE_NAME = APP_PREFIX + VERSION;
 
 const FILES_TO_CACHE = [
 
-  './manifest.json',
+  '../manifest.json',
   './index.html',
-  './css/style.css',
-  './index/index.js',
-  './js/idb.js',
+  './css/styles.css',
+  './index.js',
+  './idb.js',
   '/',
+  'https://cdn.jsdelivr.net/npm/chart.js@2.8.0',
+  'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
+  'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.woff?v=4.7.0',
+  'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0',
+  './icons/192x192.png',
+  './icons/icon-512x512.png',
 ];
 
 self.addEventListener('install', function (e) {
@@ -22,7 +28,7 @@ self.addEventListener('install', function (e) {
     self.skipWaitings();
 })
 
-self.addEventListener('fetch', function(evt) {
+self.addEventListener('fetch', function(e) {
     if (evt.request.url.includes('/api/')) {
         evt.respondWith(
           caches
