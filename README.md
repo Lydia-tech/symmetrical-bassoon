@@ -2,7 +2,6 @@
 
 This is a PWA for tracking your budget! Built with Express, Mongoose, and MongoDB.
 
-Deployed app: https://fathomless-beyond-78323.herokuapp.com/
 
 
 ## Description
@@ -19,9 +18,9 @@ When traveling, I want to be able to track my withdrawals and deposits with or w
 
 
 ## Screenshot
-![Screenshot of Budget-Tracker](./icons/screenshot.png)
+![Screenshot of Budget-Tracker](/public/icons/screenshot.png)
 
-
+Deployed app: https://fathomless-beyond-78323.herokuapp.com/
 
 
 ## Questions
