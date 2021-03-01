@@ -19,6 +19,8 @@ When traveling, I want to be able to track my withdrawals and deposits with or w
 
 
 ## Screenshot
+![Screenshot of SLP Goalden Login Page](./icons/screenshot.png)
+
 
 
 
