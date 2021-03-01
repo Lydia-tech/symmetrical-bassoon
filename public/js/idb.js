@@ -1,71 +1,69 @@
-const request = indexedDB.open("budget", 1);
+// create the budget_tracker db on indexedDB
+let db;
+const request = indexedDB.open('budget', 1);
 
-// upgradeneeded event
-request.onupgradeneeded = (event) => {
-    const db = event.target.result
-    // creates new object store with given name and options
-    // returns new IDBObjectStore
-    db.createObjectStore("pending", { autoIncrement: true })
+//const db = event.target.result;
+request.onupgradeneeded = function(event) {
+    const db = event.target.result;
+    db.createObjectStore('new_transaction', { autoIncrement: true });
 };
 
-// success event
-request.onsuccess = (event) => {
-    db = event.target.result
-    // if navigator is online, check the database
+request.onsuccess = function(event) {
+    db = event.target.result;
+
     if (navigator.onLine) {
-        referenceDB()
+        uploadTransaction();
     }
 };
 
-// error event
-request.onerror = (event) => {
-    // console log "error" and the corresponding
-    // error code for targeted event
-    console.log("Error", event.target.errorCode)
+request.onerror = function(event) {
+    console.log(event.target.errorCode);
 };
 
+function saveRecord(record) {
+    const transaction = db.transaction(['new_transaction'], 'readwrite');
 
-// function for saving the record from upgradeneeded event
-function saveRecord (record) {
-    // pending read/write transaction from databse = transact
-    const transact = db.transaction(["pending"], "readwrite")
-    // function to store the pending transaction record
-    const store = transact.objectStore("pending")
-    // saving the pending objectStore record
-    store.add(record)
-};
+    const transactionObjectStore = transaction.objectStore('new_transaction');
 
-// function to check the database for stored transaction records
-function referenceDB () {
-    const transact = db.transaction(["pending"], "readwrite")
-    const store = transact.objectStore("pending")
-    // getAll() method returns IDBRequest object containing all
-    // objects in object store matching specified parameter OR
-    // all objects in store if no parameters specified 
-    const getAll = store.getAll()
-    // get all object stores onsuccess event if result.length > 0
-    getAll.onsuccess = () => {
-        if (getAll.result.length > 0) {
-            // then fetch the bulk transactions pending
-            // post getAll results via json stringify
-            fetch("/api/transaction/bulk", {
-                method: "POST",
+    transactionObjectStore.add(record);
+}
+
+function uploadTransaction() {
+    const transaction = db.transaction(['new_transaction'], 'readwrite');
+
+    const transactionObjectStore = transaction.objectStore('new_transaction');
+
+    const getAll = transactionObjectStore.getAll();
+
+    getAll.onsuccess = function() {
+        if(getAll.result.length > 0) {
+            fetch('/api/transaction', {
+                method: 'POST',
                 body: JSON.stringify(getAll.result),
                 headers: {
-                    Accept: "application/json, text/plain, */*",
-                    "Content-Type": "application/json"
+                    Accept: 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
                 }
             })
             .then(response => response.json())
-            // finally, clear the store of pending transactions once 
-            // pending transactions are stored to database
-            .then(() => {
-                const transact = db.transaction(["pending"], "readwrite")
-                const store = transact.objectStore("pending")
-                store.clear()
+            .then(serverResponse => {
+                if (serverResponse.message) {
+                    throw new Error(serverResponse);
+                }
+
+                const transaction = db.transaction(['new_transaction'], 'readwrite');
+
+                const transactionObjectStore = transaction.objectStore('new_transaction');
+
+                transactionObjectStore.clear();
+
+                alert('All saved transactions have been submitted!');
             })
+            .catch(err => {
+                console.log(err);
+            });
         }
     }
 };
 
-window.addEventListener("online", referenceDB);
+window.addEventListener('online', uploadTransaction);

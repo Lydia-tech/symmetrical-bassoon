@@ -16,6 +16,14 @@ const FILES_TO_CACHE = [
   'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0',
   './icons/192x192.png',
   './icons/icon-512x512.png',
+  './icons/384x384.png',
+  './icons/152x152.png',
+  './icons/144x144.png',
+  './icons/128x128.png',
+  './icons/96x96.png',
+  './icons/72x72.png',
+  './favicon.png'
+
 ];
 
 self.addEventListener('install', function (e) {
@@ -44,7 +52,7 @@ self.addEventListener('fetch', function(e) {
                   return response;
                 })
                 .catch(err => {
-                  // 
+                  
                   return cache.match(evt.request);
                 });
             })
