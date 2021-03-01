@@ -8,6 +8,7 @@ request.onupgradeneeded = function(event) {
     db.createObjectStore('new_transaction', { autoIncrement: true });
 };
 
+// success event
 request.onsuccess = function(event) {
     db = event.target.result;
 
@@ -20,6 +21,7 @@ request.onerror = function(event) {
     console.log(event.target.errorCode);
 };
 
+// error event
 function saveRecord(record) {
     const transaction = db.transaction(['new_transaction'], 'readwrite');
 
@@ -37,6 +39,8 @@ function uploadTransaction() {
 
     getAll.onsuccess = function() {
         if(getAll.result.length > 0) {
+            // then fetch the bulk transactions pending
+            // post getAll results via json stringify
             fetch('/api/transaction', {
                 method: 'POST',
                 body: JSON.stringify(getAll.result),
@@ -46,6 +50,8 @@ function uploadTransaction() {
                 }
             })
             .then(response => response.json())
+            // finally, clear the store of transactions once 
+            // transactions are stored to database
             .then(serverResponse => {
                 if (serverResponse.message) {
                     throw new Error(serverResponse);
